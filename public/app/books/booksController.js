@@ -1,32 +1,38 @@
 (function(){
     angular.module("BooksLogger")
-    .controller('BooksController', ['books', 'dataService', 'logger', 'badgeService', function(books, data, logger, badgeService){
+    .controller('BooksController', ['books', 'dataService', 'logger', 'badgeService', '$q', BooksController]);
+    
+    function BooksController(books, data, logger, badgeService, $q){
         var vm = this;
     
         vm.appName = books.appName;
         vm.allBooks = [];
+        vm.allReaders = [];
 
-        data.getAllBooks()
-        .then(getBooksSuccess, null, getBooksNotification)
-        .catch(getBooksError);
+        var booksPromise = data.getAllBooks();
+        var readersPromise = data.getAllReaders();
 
-        function getBooksSuccess(booksRetrieved){
-            throw 'error in success handler';
-            vm.allBooks = booksRetrieved;
+        $q.all([booksPromise, readersPromise])
+        .then(getAllDataSuccess, null, getAllDataNotifications)
+        .catch(getAllDataError);
+
+        function getAllDataSuccess(dataArray){
+            console.log(dataArray);
+
+            vm.allBooks = dataArray[0];
+            vm.allReaders = dataArray[1];
         }
 
-        function getBooksError(error){
+        function getAllDataError(error){
             logger.output(error);
         }
 
-        function getBooksNotification(notification){
+        function getAllDataNotifications(notification){
             logger.output(notification);
         }
         
-        vm.allReaders = data.getAllReaders();
-
         vm.getBadge = badgeService.retrieveBadge;
         
         logger.output("BooksController has been Created");
-    }])
+    }
 })();
