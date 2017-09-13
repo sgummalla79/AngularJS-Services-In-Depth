@@ -1,5 +1,5 @@
 (function(){
-    var booksLogger = angular.module("BooksLogger",[]);
+    var booksLogger = angular.module("BooksLogger",['ngRoute']);
     
     booksLogger.provider("books", ['constants', function(constService){
         this.$get = function(){
@@ -25,13 +25,12 @@
     
     booksLogger.config(['booksProvider', 'constants',function(books, constService){
         books.setIncludeVersionInTitle(true);
-        console.log('title from constants service: ' + constService.APP_TITLE)
     }])
 
-    booksLogger.value({
-        appName : "",
-        appDesc : ""
-    })
+    booksLogger.config(['$routeProvider', function(routeProvider){
+        routeProvider.when
+    }])
+
 })();
 
 
