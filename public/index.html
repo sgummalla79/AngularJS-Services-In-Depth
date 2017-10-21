@@ -6,30 +6,18 @@
         <link href="css/bootstrap-theme.min.css" rel="stylesheet">
     </head>
     <body ng-app="BooksLogger">
-        <div ng-controller="BooksController as books">
-            <h1>{{books.appName}}</h1>
-            <h3>All Books</h3>
-            <div>
-                <ul>
-                    <li ng-repeat="book in books.allBooks">
-                        {{book.title}} - {{book.author}}
-                    </li>
-                </ul>
-            </div>
-            <h3>All Readers</h3>
-            <div>
-                <ul>
-                    <li ng-repeat="reader in books.allReaders">
-                        {{reader.name}} - {{books.getBadge(reader.totalMinutesRead)}}
-                    </li>
-                </ul>
-            </div>
+        <h1>Books Logger</h1>
+
+        <div ng-view>
         </div>
 
         <script src="scripts/angular.min.js"></script>
         <script src="scripts/angular-route.min.js"></script>
+        <script src="scripts/angular-cookies.min.js"></script>
         <script src="app/app.js"></script>
         <script src="app/books/booksController.js"></script>
+        <script src="app/books/addBookController.js"></script>
+        <script src="app/books/editBookController.js"></script>
         <script src="app/services/dataService.js"></script>
         <script src="app/services/loggerService.js"></script>
         <script src="app/services/constantsService.js"></script>

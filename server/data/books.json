@@ -46,5 +46,29 @@
         "title": "Green Eggs and Ham",
         "author": "Dr. Seuss",
         "year_published": "1960"
+    },
+    {
+        "book_id": 62,
+        "title": "Curious George",
+        "author": "H.A.Rey",
+        "year_published": "1941"
+    },
+    {
+        "book_id": 63,
+        "title": "Harry Potter and the Chamber of Secrets",
+        "author": "J. K. Rowling",
+        "year_published": "1998"
+    },
+    {
+        "book_id": 64,
+        "title": "Harry Potter and the Prisoner of Azkaban",
+        "author": "J. K. Rowling",
+        "year_published": "1999"
+    },
+    {
+        "book_id": 65,
+        "title": "Harry Potter and the Sorcerer's Stone",
+        "author": "J. K. Rowling",
+        "year_published": "1997"
     }
 ]

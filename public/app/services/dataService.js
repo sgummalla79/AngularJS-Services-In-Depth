@@ -2,66 +2,70 @@
     angular.module("BooksLogger")
     .factory('dataService', dataService);
 
-    function dataService(logger, $q){
+    dataService.$inject = ['logger', '$q', '$http'];
 
-        var booksArray =  [
-            {
-                "book_id": 1,
-                "title": "Anna Karenina",
-                "author": "Leo Tolstoy",
-                "year_published": "1878"
-            },
-            {
-                "book_id": 2,
-                "title": "The Things They Carried",
-                "author": "Tim O'Brien",
-                "year_published": "1990"
-            },
-            {
-                "book_id": 3,
-                "title": "Invisible Man",
-                "author": "Ralph Ellison",
-                "year_published": "1952"
-            }
-        ];
+    function dataService(logger, $q, $http){
 
-        var readersArray = [
-            {
-                reader_id : 1,
-                name : 'Marie',
-                weeklyReadingGoal : 315,
-                totalMinutesRead : 5600
-            },
-            {
-                reader_id : 2,
-                name : 'Daniel',
-                weeklyReadingGoal : 210,
-                totalMinutesRead : 3000
-            },
-            {
-                reader_id : 3,
-                name : 'Lanier',
-                weeklyReadingGoal : 140,
-                totalMinutesRead : 600
-            }
-        ];
+        return{
+            getAllBooks : getAllBooks,
+            getAllReaders : getAllReaders,
+            getBookById : getBookById,
+            updateBook : updateBook,
+            addBook : addBook
+        }
 
-        function getAllBooks(){
-            logger.output('Getting all Books..');
-            var deferred = $q.defer();
+        function getAllBooks(id){
+            return $http({
+                method : 'GET',
+                url : '/api/books/'
+            })
+            .then(function(response){
+                return $q.resolve(response.data);
+            })
+            .catch(function(response){
+                return $q.reject('Error getting books. (HTTP status: ' + response.status + ')');  
+            });
+        }
 
-            setTimeout(function(){
-                if (true){
-                    deferred.notify("Just getting started gathering books...");
-                    deferred.notify("Almost done gathering books...");
-                    deferred.resolve(booksArray);
-                }
-                else{
-                    deferred.reject("Error Retrieving Books..");
-                }
-            }, 3000);
+        function getBookById(id){
+            return $http({
+                method : 'GET',
+                url : '/api/books/' + id
+            })
+            .then(function(response){
+                return $q.resolve(response.data);
+            })
+            .catch(function(response){
+                return $q.reject('Error getting book. (HTTP status: ' + response.status + ')');  
+            });
+        }
 
-            return deferred.promise;
+        function updateBook(book){
+            return $http({
+                method : 'PUT',
+                url : '/api/books/' + book.book_id,
+                data : book
+            })
+            .then(function(response){
+                return 'Book updated: ' + response.config.data.title;
+            })
+            .catch(function(response){
+                return $q.reject('Error updating book. (HTTP status: ' + response.status + ')');  
+            });
+        }
+
+        function addBook(newBook){
+            return $http({
+                method : 'POST',
+                url : '/api/books/',
+                data : newBook
+            })
+            .then(function(response){
+                return 'Book Created: ' + response.config.data.title;
+            })
+            .catch(function(response){
+                return $q.reject('Error adding book. (HTTP status: ' + response.status + ')');  
+            });
         }
 
         function getAllReaders(){
@@ -71,21 +75,33 @@
 
             setTimeout(function(){
                 if (true){
-                    deferred.resolve(readersArray);
+                    deferred.resolve([
+                        {
+                            reader_id : 1,
+                            name : 'Marie',
+                            weeklyReadingGoal : 315,
+                            totalMinutesRead : 5600
+                        },
+                        {
+                            reader_id : 2,
+                            name : 'Daniel',
+                            weeklyReadingGoal : 210,
+                            totalMinutesRead : 3000
+                        },
+                        {
+                            reader_id : 3,
+                            name : 'Lanier',
+                            weeklyReadingGoal : 140,
+                            totalMinutesRead : 600
+                        }
+                    ]);
                 }
                 else{
-                    deferred.reject("Error Retrieving Readers..")
+                    deferred.reject("error retreiving readers");
                 }
-            },3000)
+            }, 1000);
 
             return deferred.promise;
         }
-
-        return{
-            getAllBooks : getAllBooks,
-            getAllReaders : getAllReaders
-        }
     }
-
-    dataService.$inject = ['logger', '$q'];
 })();
